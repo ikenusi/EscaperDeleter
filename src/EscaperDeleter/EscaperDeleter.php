@@ -24,12 +24,14 @@ class EscaperDeleter extends PluginBase implements Listener{
 	public function onQuit(PlayerQuitEvent $event){
 		$p = $event->getPlayer();
 		$s = $this->getServer();
-		foreach($s->getOnlinePlayers() as $ps){
-			if(!$ps->isSneaking() && $ps->distance($p) < 10){
+		foreach($p->getViewers() as $ps){
+			if($ps !== $p && !$ps->isSneaking() && $ps->distance($p) < 10){
 				$p->attack(100000, new EntityDamageEvent($p, EntityDamageEvent::CAUSE_MAGIC, 100000));
+				$p->setSpawn($p->getLevel()->getSpawn());
 				break;
 			}
 		}
+
 	}
 
 
